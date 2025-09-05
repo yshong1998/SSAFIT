@@ -1,47 +1,238 @@
-<h2 class="mb-4 fw-bold">인기 운동 영상</h2>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="video-list-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSAFIT - 당신을 위한 헬스 케어 플랫폼</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        .profile-img {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
 
-    <!-- 카드 1 -->
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
-                style="height: 180px; color: #aaa">
-                <span>Youtube 영상 썸네일</span>
+        .user-profile {
+            display: flex;
+            align-items: center;
+            color: white !important;
+            text-decoration: none;
+        }
+
+        .user-profile:hover {
+            color: #e0e0e0 !important;
+        }
+
+        .dropdown-menu {
+            min-width: 150px;
+        }
+
+        /* 카드 전체에 대한 스타일 */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* 부드러운 전환 효과 */
+        }
+
+        /* 카드에 마우스를 올렸을 때의 효과 */
+        .card:hover {
+            transform: translateY(-8px);
+            /* 위로 살짝 떠오르는 효과 */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+            /* 그림자를 더 선명하게 */
+        }
+
+        /* 카드 썸네일 영역 스타일 */
+        .card-img-top {
+            border-top-left-radius: 0.375rem;
+            /* Bootstrap 카드 기본값과 일치 */
+            border-top-right-radius: 0.375rem;
+            font-size: 0.9rem;
+        }
+
+        /* 카드 제목 스타일 */
+        .card-title {
+            font-weight: 600;
+            /* 약간 더 굵게 */
+            /* 긴 제목이 두 줄을 넘어갈 경우 ...으로 표시 */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 48px;
+            /* 제목이 한 줄일 때도 높이를 유지하여 레이아웃이 깨지지 않도록 함 */
+        }
+
+        /* 카드 설명 텍스트 스타일 */
+        .card-text {
+            font-size: 0.9rem;
+            /* 설명이 세 줄을 넘어갈 경우 ...으로 표시 */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">SSAFIT</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                    </div>
+                    <ul class="navbar-nav d-flex">
+                        <li id="auth-section">
+                            <!-- 로그인 전 상태 -->
+                            <a id="login-button" class="nav-link active d-flex" aria-current="page" href="#"
+                                style="color: white;">로그인</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">전신 근력 강화 | 30분 홈트레이닝</h5>
-                <p class="card-text text-muted">집에서 간단하게 할 수 있는 전신 운동입니다.</p>
+        </nav>
+    </header>
+
+    <main class="container mt-4">
+        <h2 class="mb-4 fw-bold">인기 운동 영상</h2>
+
+        <div id="video-list-container" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                        style="height: 180px; color: #aaa">
+                        <span>Youtube 영상 썸네일</span>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">전신 근력 강화 | 30분 홈트레이팅</h5>
+                        <p class="cart-text text-muted">집에서 간단하게 할 수 있는 전신 운동입니다.</p>
+                    </div>
+                </div>
             </div>
+
+
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                        style="height: 180px; color: #aaa">
+                        <span>Youtube 영상 썸네일</span>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">상체 집중 덤벨 운동 | 20분 코어 강화</h5>
+                        <p class="card-text text-muted">덤벨 2개만 있으면 OK! 상체 근육을 탄탄하게 만들어보세요. 조용한 동작으로 구성...</p>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
+                            style="height: 180px; color: #aaa;">
+                            <span>YouTube 영상 썸네일</span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">하체 탄력 운동 | 스쿼트 마스터하기</h5>
+                            <p class="card-text text-muted">완벽한 스쿼트 자세로 힙업과 다리 라인을 만들어요. 여성분들께 특히 추천합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+    </main>
+
+    <footer class="bg-light mt-5 py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 SSAFIT. All rights reserved.</p>
         </div>
-    </div>
+    </footer>
 
-    <!-- 카드 2 -->
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
-                style="height: 180px; color: #aaa">
-                <span>Youtube 영상 썸네일</span>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">상체 집중 덤벨 운동 | 20분 코어 강화</h5>
-                <p class="card-text text-muted">덤벨 2개만 있으면 OK! 상체 근육을 탄탄하게 만들어보세요. 조용한 동작으로 구성...</p>
-            </div>
-        </div>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 
-    <!-- 카드 3 -->
-    <div class="col">
-        <div class="card h-100 border-0 shadow-sm">
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center"
-                style="height: 180px; color: #aaa;">
-                <span>YouTube 영상 썸네일</span>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">하체 탄력 운동 | 스쿼트 마스터하기</h5>
-                <p class="card-text text-muted">완벽한 스쿼트 자세로 힙업과 다리 라인을 만들어요. 여성분들께 특히 추천합니다.</p>
-            </div>
-        </div>
-    </div>
+    <script>
+        // 사용자 정보 (실제 환경에서는 서버에서 받아올 데이터)
+        let currentUser = null;
 
-</div>
+        // 샘플 사용자 데이터
+        const sampleUser = {
+            name: "김철수",
+            profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+        };
+
+        // 로그인 상태 확인 및 UI 업데이트
+        function updateAuthUI() {
+            const authSection = document.getElementById('auth-section');
+
+            if (currentUser) {
+                // 로그인 상태 - 프로필 드롭다운으로 변경
+                authSection.innerHTML = `
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle user-profile" href="#" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="${currentUser.profileImage}" alt="Profile" class="profile-img">
+                            <span>${currentUser.name}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="myPage">마이 페이지</a></li>
+                            <li><a class="dropdown-item" href="train_log">운동 기록</a></li>
+                        </ul>
+                    </li>
+                `;
+
+            } else {
+                // 로그아웃 상태 - 로그인 버튼
+                authSection.innerHTML = `
+                    <a id="login-button" class="nav-link active d-flex" aria-current="page" href="#"
+                        style="color: white;">로그인</a>
+                `;
+
+                // 로그인 버튼 클릭 이벤트 (테스트용 로그인 수행)
+                document.getElementById('login-button').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    login(sampleUser);
+                });
+            }
+        }
+
+        // 로그인 함수
+        function login(userData) {
+            currentUser = userData;
+            // 실제 환경에서는 localStorage나 sessionStorage에 저장
+            updateAuthUI();
+            console.log('로그인 완료:', currentUser);
+        }
+
+        // 페이지 로드 시 인증 상태 확인
+        function checkAuthStatus() {
+            // 실제 환경에서는 localStorage나 서버에서 인증 상태 확인
+            const savedUser = null; // localStorage.getItem('user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+            updateAuthUI();
+        }
+
+        // 페이지 로드 완료 후 실행
+        document.addEventListener('DOMContentLoaded', function () {
+            checkAuthStatus();
+        });
+
+        
+    </script>
+</body>
+
+</html>
