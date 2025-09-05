@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSAFIT - 동영상 조회</title>
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        /* 페이지 전체 배경 설정 */
+        body {
+            background-color: #f9f9f9;
+        }
+
+        /* 비디오 플레이어 iframe 스타일 */
+        #video-player {
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 영상 제목 스타일 */
+        #video-title {
+            font-size: 1.75rem;
+            /* 폰트 크기 증가 */
+        }
+
+        /* 리뷰 섹션 스타일 */
+        #review-section {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        /* 리뷰 아이템 스타일 */
+        .review-item {
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e9ecef;
+            /* 리뷰 간 구분선 */
+        }
+
+        /* 마지막 리뷰 아이템의 하단 구분선 제거 */
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 리뷰 내용 스타일 */
+        .review-content {
+            color: #333;
+        }
+
+        /* 리뷰 날짜 스타일 */
+        .review-date {
+            font-size: 0.9rem;
+        }
+
+        /* 리뷰 수정/삭제 링크 스타일 */
+        .review-actions {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .review-actions a {
+            color: #6c757d;
+            text-decoration: none;
+            margin-right: 0.75rem;
+        }
+
+        .review-actions a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* 추천 영상 목록(aside) 스타일 */
+        aside h5 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        /* 개별 추천 영상 아이템 스타일 */
+        .recommend-item {
+            transition: background-color 0.2s ease-in-out;
+            border-radius: 8px;
+        }
+
+        .recommend-item:hover {
+            background-color: #e9ecef;
+            /* 마우스 오버 시 배경색 변경 */
+        }
+
+        /* 추천 영상 썸네일 스타일 */
+        .recommend-thumb {
+            width: 120px;
+            height: 68px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            /* 컨테이너 크기가 줄어도 이미지 크기 유지 */
+        }
+
+        /* 추천 영상 제목 스타일 (긴 제목 처리) */
+        .recommend-title {
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* 두 줄까지 표시 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        /* 추천 영상 채널명 스타일 */
+        .recommend-channel {
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="header">
+
+    </header>
+
+    <main class="container-fluid mt-4">
+        <div class="row">
+            <!-- 1. Main Content: Video Player and Details -->
+            <div class="col-lg-8">
+                <!-- Video Player -->
+                <div class="ratio ratio-16x9 mb-3">
+                    <iframe id="video-player" src="https://www.youtube.com/embed/gMaB-fG4u4g"
+                        title="YouTube video player" allowfullscreen></iframe>
+                </div>
+
+                <!-- Video Title and Description -->
+                <div id="video-details">
+                    <h3 id="video-title" class="fw-bold">전신 다이어트 최고의 운동 [칼소폭 찐 핵핵매운맛]</h3>
+                    <p id="video-channel" class="text-muted">ThankyouBUBU</p>
+                    <p id="video-description">집에서 하는 맨몸운동의 끝판왕! 힘들지만 효과는 최고입니다.</p>
+                </div>
+                <hr class="my-4">
+
+                <!-- Review Section -->
+                <section id="review-section">
+                    <h4 class="fw-bold mb-3">리뷰 및 평점</h4>
+
+                    <!-- Review Form -->
+                    <form id="review-form" class="mb-4">
+                        <div class="mb-2">
+                            <label for="review-text" class="form-label">리뷰 작성</label>
+                            <textarea id="review-text" class="form-control" rows="3"
+                                placeholder="운동 영상에 대한 솔직한 리뷰를 남겨주세요." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">리뷰 등록</button>
+                    </form>
+
+                    <!-- Review List -->
+                    <div id="review-list">
+                        <!-- Sample Review Item (repeated by JavaScript) -->
+                        <div class="review-item" data-review-id="1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="fw-bold">김헬스</span>
+                                    <span class="star-rating text-warning ms-2">★★★★★</span>
+                                </div>
+                                <span class="review-date text-muted">2024.09.05</span>
+                            </div>
+                            <p class="review-content mt-2 mb-1">정말 좋은 운동이었어요! 따라하기 쉽고 효과도 좋습니다. 추천해요!</p>
+                            <!-- Edit/Delete buttons for the author -->
+                            <div class="review-actions">
+                                <a href="#" class="edit-review-btn">수정</a>
+                                <a href="#" class="delete-review-btn">삭제</a>
+                            </div>
+                        </div>
+                        <!-- More reviews will be added here by JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- 2. Aside: Recommended Videos -->
+            <aside class="col-lg-4">
+                <h5 class="fw-bold mb-3">추천 영상</h5>
+                <div id="recommend-list">
+                    <!-- Sample Recommendation Item (repeated by JavaScript) -->
+                    <a href="#" class="recommend-item d-flex mb-3 text-decoration-none text-dark">
+                        <img src="https://img.youtube.com/vi/54tTYO-s5ZE/default.jpg" alt="Thumbnail"
+                            class="recommend-thumb me-3">
+                        <div>
+                            <p class="fw-bold mb-1 recommend-title">상체 집중 덤벨 운동 | 20분 코어 강화</p>
+                            <p class="text-muted recommend-channel">ThankyouBUBU</p>
+                        </div>
+                    </a>
+                    <!-- More recommendations will be added here by JS -->
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadHeader("header"); // 헤더를 동적으로 로드하는 함수가 있다면 그대로 호출합니다.
+
+            // --- 1. 초기화 및 DOM 요소 가져오기 ---
+            const videoPlayer = document.getElementById('video-player');
+            const videoTitle = document.getElementById('video-title');
+            const reviewForm = document.getElementById('review-form');
+            const reviewList = document.getElementById('review-list');
+            const recommendList = document.getElementById('recommend-list');
+
+            // 현재 로그인한 사용자 정보 가져오기
+            const loggedInUserEmail = sessionStorage.getItem('loggedInUser');
+            const allUsers = { ...localStorage }; // 모든 localStorage 데이터를 가져옴
+            let loggedInUserName = '익명';
+            if (loggedInUserEmail) {
+                const userData = JSON.parse(allUsers[loggedInUserEmail]);
+                loggedInUserName = userData.name;
+            }
+
+            // --- 2. URL에서 비디오 ID 가져와서 동영상 로드하기 ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('id');
+
+            if (!videoId) {
+                alert('잘못된 접근입니다.');
+                window.location.href = 'index.html'; // 비디오 ID가 없으면 메인으로
+                return;
+            }
+
+            // localStorage에서 전체 비디오 목록 가져오기
+            const allVideos = JSON.parse(localStorage.getItem('ssafit_videos')) || [];
+            const currentVideo = allVideos.find(v => v.id === videoId);
+
+            // 현재 비디오 정보로 페이지 콘텐츠 업데이트
+            if (currentVideo) {
+                videoPlayer.src = `https://www.youtube.com/embed/${currentVideo.id}`;
+                videoTitle.textContent = currentVideo.title;
+                // 필요하다면 채널명, 설명도 업데이트
+                // document.getElementById('video-channel').textContent = currentVideo.channelName;
+                // document.getElementById('video-description').textContent = currentVideo.description;
+            }
+
+            // 추천 영상 목록 렌더링
+            const recommendedVideos = allVideos.filter(v => v.id !== videoId);
+            recommendList.innerHTML = recommendedVideos.map(video => `
+        <a href="video.html?id=${video.id}" class="recommend-item d-flex mb-3 text-decoration-none text-dark">
+            <img src="https://img.youtube.com/vi/${video.id}/default.jpg" alt="${video.title}" class="recommend-thumb me-3">
+            <div>
+                <p class="fw-bold mb-1 recommend-title">${video.title}</p>
+            </div>
+        </a>
+    `).join('');
+
+
+            // --- 3. 리뷰 기능 구현 ---
+            const reviewStorageKey = `ssafit_reviews_${videoId}`;
+
+            // 리뷰 목록을 화면에 렌더링하는 함수
+            const renderReviews = () => {
+                const reviews = JSON.parse(localStorage.getItem(reviewStorageKey)) || [];
+                reviewList.innerHTML = reviews.map(review => `
+            <div class="review-item" data-review-id="${review.id}">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="fw-bold">${review.author}</span>
+                    </div>
+                    <span class="review-date text-muted">${new Date(review.date).toLocaleDateString()}</span>
+                </div>
+                <p class="review-content mt-2 mb-1">${review.text}</p>
+                ${
+                    // 현재 로그인한 사용자가 작성한 리뷰에만 수정/삭제 버튼 표시
+                    review.authorEmail === loggedInUserEmail ? `
+                    <div class="review-actions">
+                        <a href="#" class="edit-review-btn">수정</a>
+                        <a href="#" class="delete-review-btn">삭제</a>
+                    </div>
+                    ` : ''
+                    }
+            </div>
+        `).join('');
+            };
+
+            // 리뷰 폼 제출 이벤트 (리뷰 생성)
+            reviewForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (!loggedInUserEmail) {
+                    alert('리뷰를 작성하려면 로그인이 필요합니다.');
+                    return;
+                }
+
+                const reviewText = document.getElementById('review-text').value.trim();
+                if (!reviewText) {
+                    alert('리뷰 내용을 입력해주세요.');
+                    return;
+                }
+
+                const newReview = {
+                    id: Date.now(), // 간단한 고유 ID 생성
+                    author: loggedInUserName,
+                    authorEmail: loggedInUserEmail,
+                    text: reviewText,
+                    date: new Date().toISOString()
+                };
+
+                const reviews = JSON.parse(localStorage.getItem(reviewStorageKey)) || [];
+                reviews.unshift(newReview);
+                localStorage.setItem(reviewStorageKey, JSON.stringify(reviews));
+
+                document.getElementById('review-text').value = ''; // 입력창 비우기
+                renderReviews(); // 리뷰 목록 새로고침
+            });
+
+            // 리뷰 목록 클릭 이벤트 (수정 및 삭제 처리 - 이벤트 위임)
+            reviewList.addEventListener('click', function (event) {
+                const target = event.target;
+                const reviewItem = target.closest('.review-item');
+                if (!reviewItem) return;
+
+                const reviewId = Number(reviewItem.dataset.reviewId);
+                let reviews = JSON.parse(localStorage.getItem(reviewStorageKey)) || [];
+
+                // 삭제 버튼 클릭 시
+                if (target.classList.contains('delete-review-btn')) {
+                    if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+                        const updatedReviews = reviews.filter(review => review.id !== reviewId);
+                        localStorage.setItem(reviewStorageKey, JSON.stringify(updatedReviews));
+                        renderReviews();
+                    }
+                }
+
+                // 수정 버튼 클릭 시
+                if (target.classList.contains('edit-review-btn')) {
+                    const reviewToEdit = reviews.find(review => review.id === reviewId);
+                    const newText = prompt('리뷰를 수정하세요:', reviewToEdit.text);
+
+                    if (newText !== null && newText.trim() !== '') {
+                        reviewToEdit.text = newText.trim();
+                        localStorage.setItem(reviewStorageKey, JSON.stringify(reviews));
+                        renderReviews();
+                    }
+                }
+            });
+
+            // --- 4. 초기 렌더링 실행 ---
+            renderReviews();
+        });
+    </script>
+
+</body>
+
+</html>
