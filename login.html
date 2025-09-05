@@ -44,12 +44,26 @@
             text-decoration: none;
             color: #4a6984;
         }
+        .demo-login {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .demo-login h6 {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        .demo-login button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
         <h2>로그인</h2>
-        <!-- ★ 수정: form 태그에 id="loginForm" 추가 -->
         <form id="loginForm">
             <div class="mb-3">
                 <input type="email" class="form-control form-control-lg" id="email" placeholder="이메일을 입력하세요" required>
@@ -61,6 +75,15 @@
                 <button type="submit" class="btn btn-custom text-white">로그인</button>
             </div>
         </form>
+        
+        <!-- 데모용 로그인 -->
+        <div class="demo-login">
+            <h6>테스트 계정으로 로그인</h6>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="demoLogin('김철수')">김철수 계정</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="demoLogin('이영희')">이영희 계정</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="demoLogin('박민수')">박민수 계정</button>
+        </div>
+        
         <div class="signup-link">
             <span>계정이 없으신가요?</span>
             <a href="register.html">회원가입</a>
@@ -68,14 +91,59 @@
     </div>
 
     <script>
-        // 이제 이 코드가 정상적으로 동작합니다.
+        // 데모용 사용자 데이터 생성 (실제 환경에서는 서버에서 관리)
+        function initializeDemoUsers() {
+            const demoUsers = [
+                {
+                    email: 'kimcs@ssafit.com',
+                    password: '1234',
+                    name: '김철수',
+                    profileImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
+                },
+                {
+                    email: 'leeyh@ssafit.com',
+                    password: '1234',
+                    name: '이영희',
+                    profileImage: 'https://images.unsplash.com/photo-1494790108755-2616b612b123?w=100&h=100&fit=crop&crop=face'
+                },
+                {
+                    email: 'parkms@ssafit.com',
+                    password: '1234',
+                    name: '박민수',
+                    profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
+                }
+            ];
+            
+            // localStorage에 데모 사용자 데이터 저장 (기존에 없는 경우에만)
+            demoUsers.forEach(user => {
+                if (!localStorage.getItem(user.email)) {
+                    localStorage.setItem(user.email, JSON.stringify(user));
+                }
+            });
+        }
+        
+        // 데모 로그인 함수
+        function demoLogin(userName) {
+            const demoCredentials = {
+                '김철수': { email: 'kimcs@ssafit.com', password: '1234' },
+                '이영희': { email: 'leeyh@ssafit.com', password: '1234' },
+                '박민수': { email: 'parkms@ssafit.com', password: '1234' }
+            };
+            
+            const credentials = demoCredentials[userName];
+            if (credentials) {
+                document.getElementById('email').value = credentials.email;
+                document.getElementById('password').value = credentials.password;
+            }
+        }
+        
+        // 로그인 폼 처리
         const loginForm = document.getElementById('loginForm');
-
+        
         loginForm.addEventListener('submit', function(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value.trim();
-            
             const password = document.getElementById('password').value;
 
             if (email === '') {
@@ -99,11 +167,24 @@
 
             if (userData.password === password) {
                 alert(`${userData.name}님, 환영합니다!`);
+                // 세션에 로그인 정보 저장
                 sessionStorage.setItem('loggedInUser', email);
                 
-                window.location.href = 'profile.html'; 
+                // index.html로 리다이렉트
+                window.location.href = 'index.html';
             } else {
                 alert('비밀번호가 일치하지 않습니다.');
+            }
+        });
+        
+        // 페이지 로드 시 데모 사용자 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDemoUsers();
+            
+            // 이미 로그인된 상태라면 index.html로 리다이렉트
+            const loggedInUser = sessionStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                window.location.href = 'index.html';
             }
         });
     </script>

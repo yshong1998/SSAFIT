@@ -34,31 +34,20 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">SSAFIT</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                    </div>
-                    <ul class="navbar-nav d-flex">
-                        <li id="auth-section">
-                            <!-- 로그인 전 상태 -->
-                            <a id="login-button" class="nav-link active d-flex" aria-current="page" href="#"
-                                style="color: white;">로그인</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <header id="header"></header>
     
     <main class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">SSAFIT에 오신 것을 환영합니다!</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">헬스케어 플랫폼</h5>
+                        <p class="card-text">당신의 건강한 라이프스타일을 위한 최고의 파트너</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
     
     <footer class="bg-light mt-5 py-4">
@@ -70,73 +59,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-    
+    <script src="./js/index.js"></script>
     <script>
-        // 사용자 정보 (실제 환경에서는 서버에서 받아올 데이터)
-        let currentUser = null;
-        
-        // 샘플 사용자 데이터
-        const sampleUser = {
-            name: "김철수",
-            profileImage: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-        };
-        
-        // 로그인 상태 확인 및 UI 업데이트
-        function updateAuthUI() {
-            const authSection = document.getElementById('auth-section');
-            
-            if (currentUser) {
-                // 로그인 상태 - 프로필 드롭다운으로 변경
-                authSection.innerHTML = `
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle user-profile" href="#" id="userDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="${currentUser.profileImage}" alt="Profile" class="profile-img">
-                            <span>${currentUser.name}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="myPage">마이 페이지</a></li>
-                            <li><a class="dropdown-item" href="train_log">운동 기록</a></li>
-                        </ul>
-                    </li>
-                `;
-                
-            } else {
-                // 로그아웃 상태 - 로그인 버튼
-                authSection.innerHTML = `
-                    <a id="login-button" class="nav-link active d-flex" aria-current="page" href="#"
-                        style="color: white;">로그인</a>
-                `;
-                
-                // 로그인 버튼 클릭 이벤트 (테스트용 로그인 수행)
-                document.getElementById('login-button').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    login(sampleUser);
-                });
-            }
-        }
-        
-        // 로그인 함수
-        function login(userData) {
-            currentUser = userData;
-            // 실제 환경에서는 localStorage나 sessionStorage에 저장
-            updateAuthUI();
-            console.log('로그인 완료:', currentUser);
-        }
-        
-        // 페이지 로드 시 인증 상태 확인
-        function checkAuthStatus() {
-            // 실제 환경에서는 localStorage나 서버에서 인증 상태 확인
-            const savedUser = null; // localStorage.getItem('user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-            }
-            updateAuthUI();
-        }
-        
         // 페이지 로드 완료 후 실행
         document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
+            loadHeader("header");
         });
     </script>
 </body>
