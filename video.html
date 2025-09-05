@@ -226,11 +226,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const videoId = urlParams.get('id');
 
-            if (!videoId) {
-                alert('잘못된 접근입니다.');
-                window.location.href = 'index.html'; // 비디오 ID가 없으면 메인으로
-                return;
-            }
+            // if (!videoId) {
+            //     alert('잘못된 접근입니다.');
+            //     window.location.href = 'index.html'; // 비디오 ID가 없으면 메인으로
+            //     return;
+            // }
 
             // localStorage에서 전체 비디오 목록 가져오기
             const allVideos = JSON.parse(localStorage.getItem('ssafit_videos')) || [];
