@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSAFIT - 프로필 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .container-wrapper {
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        .container-wrapper h2 {
+            margin-bottom: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        /* 프로필 정보 섹션은 기본적으로 숨김 처리 */
+        #profile-details-container {
+            display: none;
+        }
+        .btn-logout {
+            background-color: #6c757d;
+        }
+        .btn-logout:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-wrapper">
+        <!-- 1. 비밀번호 확인 섹션 -->
+        <div id="password-check-container">
+            <h2>비밀번호 확인</h2>
+            <p class="text-center text-muted mb-4">회원님의 정보를 안전하게 보호하기 위해 비밀번호를 다시 입력해주세요.</p>
+            <form id="passwordCheckForm">
+                <div class="mb-3">
+                    <input type="password" class="form-control form-control-lg" id="passwordCheck" placeholder="비밀번호" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">확인</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 2. 프로필 정보 조회 및 수정 섹션 -->
+        <div id="profile-details-container">
+            <h2>프로필 정보 수정</h2>
+            <form id="profileUpdateForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold">이메일</label>
+                    <input type="email" class="form-control" id="email" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label fw-bold">이름</label>
+                    <input type="text" class="form-control" id="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label fw-bold">나이</label>
+                    <input type="number" class="form-control" id="age" required>
+                </div>
+                <hr class="my-4">
+                <p class="text-muted small">비밀번호를 변경하려면 아래에 새 비밀번호를 입력하세요. 변경하지 않으려면 비워두세요.</p>
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label fw-bold">새 비밀번호</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="8자 이상, 영문/숫자 조합">
+                </div>
+                <div class="mb-3">
+                    <label for="confirmNewPassword" class="form-label fw-bold">새 비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmNewPassword">
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">정보 수정하기</button>
+                    <button type="button" id="logoutButton" class="btn btn-logout text-white btn-lg">로그아웃</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 초기 설정 및 로그인 상태 검증 ---
+            const loggedInUserEmail = sessionStorage.getItem('loggedInUser');
+            if (!loggedInUserEmail) {
+                alert('로그인이 필요합니다.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem(loggedInUserEmail));
+            if (!userData) {
+                alert('사용자 정보를 찾을 수 없습니다. 다시 로그인해주세요.');
+                sessionStorage.removeItem('loggedInUser');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const passwordCheckContainer = document.getElementById('password-check-container');
+            const profileDetailsContainer = document.getElementById('profile-details-container');
+            
+            // --- 1. 비밀번호 확인 로직 ---
+            document.getElementById('passwordCheckForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const enteredPassword = document.getElementById('passwordCheck').value;
+
+                if (enteredPassword === userData.password) {
+                    // 비밀번호 일치 시
+                    passwordCheckContainer.style.display = 'none';
+                    profileDetailsContainer.style.display = 'block';
+                    
+                    // 폼에 기존 정보 채우기
+                    document.getElementById('email').value = loggedInUserEmail;
+                    document.getElementById('name').value = userData.name;
+                    document.getElementById('age').value = userData.age;
+                } else {
+                    // 비밀번호 불일치 시
+                    alert('비밀번호가 일치하지 않습니다.');
+                }
+            });
+
+            // --- 2. 정보 수정 로직 ---
+            document.getElementById('profileUpdateForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const newName = document.getElementById('name').value.trim();
+                const newAge = document.getElementById('age').value.trim();
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+                if (!newName || !newAge) {
+                    alert('이름과 나이는 필수 입력 항목입니다.');
+                    return;
+                }
+
+                const updatedUserData = { ...userData, name: newName, age: newAge };
+
+                // 새 비밀번호가 입력되었을 경우에만 유효성 검사 후 변경
+                if (newPassword) {
+                    if (newPassword !== confirmNewPassword) {
+                        alert('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                        return;
+                    }
+                    const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+                    if (!pwRegex.test(newPassword)) {
+                        alert('새 비밀번호는 8자 이상이며, 영문과 숫자를 모두 포함해야 합니다.');
+                        return;
+                    }
+                    updatedUserData.password = newPassword;
+                }
+
+                // localStorage에 최종 정보 업데이트
+                localStorage.setItem(loggedInUserEmail, JSON.stringify(updatedUserData));
+                alert('프로필 정보가 성공적으로 수정되었습니다.');
+                // 비밀번호가 변경되었을 수 있으므로 페이지를 새로고침하여 다시 인증하도록 유도
+                window.location.reload(); 
+            });
+
+            // --- 3. 로그아웃 로직 ---
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                sessionStorage.removeItem('loggedInUser');
+                alert('성공적으로 로그아웃되었습니다.');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+
+</body>
+</html>
